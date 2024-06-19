@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
+        <module name="discovery-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="21" />
+      <module name="discovery-server" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
