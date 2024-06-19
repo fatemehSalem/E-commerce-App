@@ -8,16 +8,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="discovery-server" />
+        <module name="customer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="21" />
+      <module name="customer" target="21" />
       <module name="discovery-server" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="config-server" options="-parameters" />
+      <module name="customer" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
     </option>
   </component>
