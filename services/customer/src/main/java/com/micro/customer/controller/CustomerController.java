@@ -2,6 +2,7 @@ package com.micro.customer.controller;
 
 import com.micro.customer.model.ApiResponse;
 import com.micro.customer.model.CustomerRequest;
+import com.micro.customer.model.CustomerResponse;
 import com.micro.customer.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

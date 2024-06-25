@@ -1,7 +1,6 @@
 package com.micro.customer.model;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
 @AllArgsConstructor
