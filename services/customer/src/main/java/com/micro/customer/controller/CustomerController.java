@@ -23,6 +23,6 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
             @RequestBody @Valid CustomerRequest customerRequest
     ){
-        return  null;
+        return  customerService.createCustomer(customerRequest);
     }
 }
