@@ -26,7 +26,8 @@ public class CustomerService {
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(CustomerRequest customerRequest) {
         var customer = customerRepository.save(customerMapper.toCustomer(customerRequest));
         var customerResponse = customerMapper.toCustomerResponse(customer);
-        ApiResponse<CustomerResponse> response = new ApiResponse<>(customerResponse,
+        ApiResponse<CustomerResponse> response = new ApiResponse<>(
+                customerResponse,
                 "create Customer was successful",
                 HttpStatus.OK.value());
 
@@ -39,6 +40,10 @@ public class CustomerService {
                 String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerRequest.id())
         ));
         mergeCustomer(customerRequest, customer);
+        ApiResponse<Long> response = new ApiResponse<>(
+                customer.getId(),
+                "update Customer was successful",
+                HttpStatus.OK.value());
         return null;
     }
 
