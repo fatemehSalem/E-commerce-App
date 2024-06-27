@@ -1,5 +1,6 @@
 package com.micro.customer.service;
 
+import com.micro.customer.exception.CustomerNotFoundException;
 import com.micro.customer.mapper.CustomerMapper;
 import com.micro.customer.model.ApiResponse;
 import com.micro.customer.model.CustomerRequest;
@@ -10,7 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +31,12 @@ public class CustomerService {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<ApiResponse<Long>> updateCustomer(CustomerRequest customerRequest) {
+        var customer = customerRepository.findById(customerRequest.id()).orElseThrow(() -> new CustomerNotFoundException(
+                String.format("Cannot update customer :: no Customer found with this provided id :: %s" , customerRequest.id())
+        ));
+        return null;
     }
 }
