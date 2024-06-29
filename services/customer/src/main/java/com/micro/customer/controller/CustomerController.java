@@ -36,4 +36,9 @@ public class CustomerController {
         return customerService.findAllCustomers();
     }
 
+    @GetMapping("/exits/{customerId}")
+    public ResponseEntity<ApiResponse<Boolean>> customerExitsById(@PathVariable("customerId") Long customerId){
+        return customerService.customerExitsById(customerId);
+    }
+
 }

@@ -74,4 +74,11 @@ public class CustomerService {
                 HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    public ResponseEntity<ApiResponse<Boolean>> customerExitsById(Long customerId) {
+        var exists =  customerRepository.findById(customerId).isPresent();
+        String message = exists ? "Customer exists" : "Customer not found";
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists , message , HttpStatus.OK.value());
+        return  new ResponseEntity<>(apiResponse , HttpStatus.OK);
+    }
 }
