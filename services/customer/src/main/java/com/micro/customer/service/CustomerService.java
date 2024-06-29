@@ -40,8 +40,8 @@ public class CustomerService {
     public ResponseEntity<ApiResponse<Long>> updateCustomer(CustomerRequest customerRequest) {
         var customer = customerRepository.findById(customerRequest.id())
                 .orElseThrow(() -> new CustomerNotFoundException(
-                String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerRequest.id())
-        ));
+                        String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerRequest.id())
+                ));
         mergeCustomer(customerRequest, customer);
         ApiResponse<Long> response = new ApiResponse<>(
                 customer.getId(),
@@ -77,9 +77,19 @@ public class CustomerService {
     }
 
     public ResponseEntity<ApiResponse<Boolean>> customerExitsById(Long customerId) {
-        var exists =  customerRepository.findById(customerId).isPresent();
+        var exists = customerRepository.findById(customerId).isPresent();
         String message = exists ? "Customer exists" : "Customer not found";
-        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists , message , HttpStatus.OK.value());
-        return  new ResponseEntity<>(apiResponse , HttpStatus.OK);
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists, message, HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<ApiResponse<CustomerResponse>> findById(Long customerId) {
+        var customer = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException(
+                String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId)
+        ));
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(customerMapper.fromCustomer(customer),
+                "find customer by ID was successful", HttpStatus.OK.value());
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

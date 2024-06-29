@@ -18,20 +18,20 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
             @RequestBody @Valid CustomerRequest customerRequest
     ){
         return  customerService.createCustomer(customerRequest);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<Long>> updateCustomer(
             @RequestBody @Valid CustomerRequest customerRequest){
         return  customerService.updateCustomer(customerRequest);
     }
 
-    @GetMapping
+    @GetMapping("/fondAll")
     public ResponseEntity<ApiResponse<List<CustomerResponse>>> findAllCustomers(){
         return customerService.findAllCustomers();
     }
@@ -41,4 +41,8 @@ public class CustomerController {
         return customerService.customerExitsById(customerId);
     }
 
+    @GetMapping("/findById/{customerId}")
+    public ResponseEntity<ApiResponse<CustomerResponse>> findById(@PathVariable("customerId") Long customerId){
+        return customerService.findById(customerId);
+    }
 }
