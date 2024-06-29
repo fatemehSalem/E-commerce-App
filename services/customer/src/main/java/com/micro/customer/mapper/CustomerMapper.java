@@ -18,7 +18,7 @@ public class CustomerMapper {
                 .build();
     }
 
-    public CustomerResponse toCustomerResponse(Customer customer)
+    public CustomerResponse fromCustomer(Customer customer)
     {
         return new CustomerResponse(
                 customer.getId(),

@@ -1,6 +1,6 @@
 package com.micro.customer.service;
 
-import com.ctc.wstx.util.StringUtil;
+
 import com.micro.customer.exception.CustomerNotFoundException;
 import com.micro.customer.mapper.CustomerMapper;
 import com.micro.customer.model.ApiResponse;
@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class CustomerService {
 
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(CustomerRequest customerRequest) {
         var customer = customerRepository.save(customerMapper.toCustomer(customerRequest));
-        var customerResponse = customerMapper.toCustomerResponse(customer);
+        var customerResponse = customerMapper.fromCustomer(customer);
         ApiResponse<CustomerResponse> response = new ApiResponse<>(
                 customerResponse,
                 "create Customer was successful",
@@ -44,7 +46,7 @@ public class CustomerService {
                 customer.getId(),
                 "update Customer was successful",
                 HttpStatus.OK.value());
-        return null;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private void mergeCustomer(CustomerRequest customerRequest, Customer customer) {
@@ -59,5 +61,17 @@ public class CustomerService {
 
         if (customerRequest.address() != null)
             customer.setAddress(customerRequest.address());
+    }
+
+    public ResponseEntity<ApiResponse<List<CustomerResponse>>> findAllCustomers() {
+        List<CustomerResponse> customerResponses = customerRepository.
+                findAll()
+                .stream()
+                .map(customerMapper::fromCustomer).toList();
+        ApiResponse<List<CustomerResponse>> apiResponse = new ApiResponse<>(
+                customerResponses,
+                "find All customers was successful",
+                HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }
