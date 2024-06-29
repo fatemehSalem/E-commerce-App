@@ -38,7 +38,8 @@ public class CustomerService {
     }
 
     public ResponseEntity<ApiResponse<Long>> updateCustomer(CustomerRequest customerRequest) {
-        var customer = customerRepository.findById(customerRequest.id()).orElseThrow(() -> new CustomerNotFoundException(
+        var customer = customerRepository.findById(customerRequest.id())
+                .orElseThrow(() -> new CustomerNotFoundException(
                 String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerRequest.id())
         ));
         mergeCustomer(customerRequest, customer);
