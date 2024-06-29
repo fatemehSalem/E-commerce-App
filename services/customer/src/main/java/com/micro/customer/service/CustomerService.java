@@ -84,10 +84,13 @@ public class CustomerService {
     }
 
     public ResponseEntity<ApiResponse<CustomerResponse>> findById(Long customerId) {
-        var customer = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException(
+        var customer = customerRepository
+                .findById(customerId)
+                .map(customerMapper::fromCustomer)
+                .orElseThrow(() -> new CustomerNotFoundException(
                 String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId)
         ));
-        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(customerMapper.fromCustomer(customer),
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(customer,
                 "find customer by ID was successful", HttpStatus.OK.value());
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
