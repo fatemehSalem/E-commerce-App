@@ -79,7 +79,8 @@ public class CustomerService {
     public ResponseEntity<ApiResponse<Boolean>> customerExitsById(Long customerId) {
         var exists = customerRepository.findById(customerId).isPresent();
         String message = exists ? "Customer exists" : "Customer not found";
-        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists, message, HttpStatus.OK.value());
+        int value = exists ? HttpStatus.OK.value() : HttpStatus.NOT_FOUND.value();
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists, message, value);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
@@ -88,11 +89,22 @@ public class CustomerService {
                 .findById(customerId)
                 .map(customerMapper::fromCustomer)
                 .orElseThrow(() -> new CustomerNotFoundException(
-                String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId)
-        ));
+                        String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId)
+                ));
         ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(customer,
                 "find customer by ID was successful", HttpStatus.OK.value());
 
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    public ResponseEntity<ApiResponse<?>> deleteCustomer(Long customerId) {
+        ApiResponse<Void> apiResponse;
+        if (customerRepository.findById(customerId).isPresent()) {
+            customerRepository.findById(customerId).ifPresent(customerRepository::delete);
+            apiResponse = new ApiResponse<>(null, "Customer deleted successfully", HttpStatus.OK.value());
+        } else {
+            apiResponse = new ApiResponse<>(null, "Customer not found", HttpStatus.NOT_FOUND.value());
+        }
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

@@ -45,4 +45,9 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<CustomerResponse>> findById(@PathVariable("customerId") Long customerId){
         return customerService.findById(customerId);
     }
+
+    @DeleteMapping("/delete/{customerId}")
+    public ResponseEntity<ApiResponse<?>> deleteCustomer(@PathVariable("customerId") Long customerId){
+        return customerService.deleteCustomer(customerId);
+    }
 }
