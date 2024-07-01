@@ -78,9 +78,12 @@ public class CustomerService {
 
     public ResponseEntity<ApiResponse<Boolean>> customerExitsById(Long customerId) {
         var exists = customerRepository.findById(customerId).isPresent();
-        String message = exists ? "Customer exists" : "Customer not found";
-        int value = exists ? HttpStatus.OK.value() : HttpStatus.NOT_FOUND.value();
-        ApiResponse<Boolean> apiResponse = new ApiResponse<>(exists, message, value);
+        ApiResponse<Boolean> apiResponse;
+        if(exists)
+            apiResponse = new ApiResponse<>(true, "Customer exists", HttpStatus.OK.value());
+        else
+            throw  new CustomerNotFoundException(  String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
+
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
@@ -103,7 +106,7 @@ public class CustomerService {
             customerRepository.findById(customerId).ifPresent(customerRepository::delete);
             apiResponse = new ApiResponse<>(null, "Customer deleted successfully", HttpStatus.OK.value());
         } else {
-            apiResponse = new ApiResponse<>(null, "Customer not found", HttpStatus.NOT_FOUND.value());
+            throw  new CustomerNotFoundException(  String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
         }
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
