@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
+        <module name="product" />
         <module name="discovery-server" />
         <module name="customer" />
       </profile>
@@ -16,6 +17,7 @@
       <module name="config-server" target="21" />
       <module name="customer" target="21" />
       <module name="discovery-server" target="21" />
+      <module name="product" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
