@@ -79,10 +79,13 @@ public class CustomerService {
     public ResponseEntity<ApiResponse<Boolean>> customerExitsById(Long customerId) {
         var exists = customerRepository.findById(customerId).isPresent();
         ApiResponse<Boolean> apiResponse;
-        if(exists)
-            apiResponse = new ApiResponse<>(true, "Customer exists", HttpStatus.OK.value());
+        if (exists)
+            apiResponse = new ApiResponse<>(
+                    true,
+                    "Customer exists",
+                    HttpStatus.OK.value());
         else
-            throw  new CustomerNotFoundException(  String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
+            throw new CustomerNotFoundException(String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
@@ -94,8 +97,10 @@ public class CustomerService {
                 .orElseThrow(() -> new CustomerNotFoundException(
                         String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId)
                 ));
-        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(customer,
-                "find customer by ID was successful", HttpStatus.OK.value());
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>(
+                customer,
+                "find customer by ID was successful",
+                HttpStatus.OK.value());
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
@@ -104,9 +109,12 @@ public class CustomerService {
         ApiResponse<Void> apiResponse;
         if (customerRepository.findById(customerId).isPresent()) {
             customerRepository.findById(customerId).ifPresent(customerRepository::delete);
-            apiResponse = new ApiResponse<>(null, "Customer deleted successfully", HttpStatus.OK.value());
+            apiResponse = new ApiResponse<>(
+                    null,
+                    "Customer deleted successfully",
+                    HttpStatus.OK.value());
         } else {
-            throw  new CustomerNotFoundException(  String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
+            throw new CustomerNotFoundException(String.format("Cannot update customer :: no Customer found with this provided id :: %s", customerId));
         }
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
