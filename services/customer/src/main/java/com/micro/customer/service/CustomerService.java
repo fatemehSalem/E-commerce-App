@@ -105,6 +105,7 @@ public class CustomerService {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+
     public ResponseEntity<ApiResponse<?>> deleteCustomer(Long customerId) {
         ApiResponse<Void> apiResponse;
         if (customerRepository.findById(customerId).isPresent()) {
