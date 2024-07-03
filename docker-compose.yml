@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - local_pgdata:/var/lib/postgresql/data
-    networks:
-      - microservices-net
+#    networks:
+#      - microservices-net
     restart: unless-stopped
 
   pgadmin:
@@ -23,8 +23,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     volumes:
       - pgadmin-data:/var/lib/pgadmin/data
-    networks:
-      - microservices-net
+#    networks:
+#      - microservices-net
     restart: unless-stopped
 
 
@@ -61,9 +61,9 @@ services:
     ports:
       - 1080:1080 #for UI
       - 1025:1025 #SMTP
-networks:
-  microservices-net:
-    driver: bridge
+#networks:
+#  microservices-net:
+#    driver: bridge
 volumes:
   local_pgdata:
   pgadmin-data:
