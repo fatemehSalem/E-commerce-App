@@ -22,6 +22,6 @@ public class Category {
     private String description;
 
     @OneToMany(mappedBy = "category" ,
-            cascade = CascadeType.REMOVE)
+               cascade = CascadeType.ALL)
     private List<Product> productList;
 }
