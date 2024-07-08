@@ -1,16 +1,21 @@
 package com.micro.product.service;
 
+import com.micro.product.exception.ProductPurchaseException;
 import com.micro.product.mapper.ProductMapper;
 import com.micro.product.model.*;
 import com.micro.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -27,7 +32,27 @@ public class ProductService {
     }
 
     public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(List<ProductPurchaseRequest> request) {
+        var productIds = request.stream()
+                .map(ProductPurchaseRequest::productId).toList();
+        var storedProducts = productRepository.findAllByIdOrderById(productIds);
+        if(productIds.size() != storedProducts.size())
+            throw new ProductPurchaseException("One or more products does not exits!");
 
+        var sortedRequest = request
+                .stream()
+                .sorted(Comparator.comparing(ProductPurchaseRequest::productId))
+                .toList();
+        var purchasedProducts = new ArrayList<ProductPurchaseResponse>();
+        for (int i = 0; i < storedProducts.size(); i++) {
+            var product = storedProducts.get(i);
+            var productRequest = sortedRequest.get(i);
+            if (product.getAvailableQuantity() < productRequest.quantity())
+                throw new ProductPurchaseException("Insufficient stock quantity for product with ID:: " + productRequest.productId());
+            var newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
+            product.setAvailableQuantity(newAvailableQuantity);
+            productRepository.save(product);
+            purchasedProducts.add(productMapper.toProductPurchaseResponse(product, productRequest.quantity()));
+        }
         return null;
     }
 

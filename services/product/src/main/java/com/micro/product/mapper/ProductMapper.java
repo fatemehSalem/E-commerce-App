@@ -1,9 +1,6 @@
 package com.micro.product.mapper;
 
-import com.micro.product.model.Category;
-import com.micro.product.model.Product;
-import com.micro.product.model.ProductRequest;
-import com.micro.product.model.ProductResponse;
+import com.micro.product.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,5 +32,14 @@ public class ProductMapper {
                 product.getCategory().getId(),
                 product.getCategory().getName(),
                 product.getCategory().getDescription());
+    }
+
+    public ProductPurchaseResponse toProductPurchaseResponse(Product product, double quantity) {
+        return new ProductPurchaseResponse(product.getId() ,
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                quantity);
+
     }
 }
