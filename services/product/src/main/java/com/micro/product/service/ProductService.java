@@ -3,6 +3,7 @@ package com.micro.product.service;
 import com.micro.product.mapper.ProductMapper;
 import com.micro.product.model.*;
 import com.micro.product.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,18 @@ public class ProductService {
     public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(List<ProductPurchaseRequest> request) {
 
         return null;
+    }
+
+
+    public ResponseEntity<ApiResponse<ProductResponse>> findById(Long productId) {
+        var productResponse = productRepository.findById(productId)
+                .map(productMapper::fromProduct)
+                .orElseThrow(() -> new EntityNotFoundException("product not found with the ID:: " + productId));
+
+        ApiResponse<ProductResponse> response = new ApiResponse<>(
+                productResponse,
+                "Product found By Id was successful",
+                HttpStatus.OK.value());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
