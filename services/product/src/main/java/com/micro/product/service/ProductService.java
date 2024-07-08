@@ -34,7 +34,7 @@ public class ProductService {
     public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(List<ProductPurchaseRequest> request) {
         var productIds = request.stream()
                 .map(ProductPurchaseRequest::productId).toList();
-        var storedProducts = productRepository.findAllByIdOrderById(productIds);
+        var storedProducts = productRepository.findAllByIdOrderByIdAsc(productIds);
         if(productIds.size() != storedProducts.size())
             throw new ProductPurchaseException("One or more products does not exits!");
 
