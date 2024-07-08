@@ -53,7 +53,11 @@ public class ProductService {
             productRepository.save(product);
             purchasedProducts.add(productMapper.toProductPurchaseResponse(product, productRequest.quantity()));
         }
-        return null;
+        ApiResponse<List<ProductPurchaseResponse>> response = new ApiResponse<>(
+                purchasedProducts,
+                "purchase Products were successful",
+                HttpStatus.OK.value());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
