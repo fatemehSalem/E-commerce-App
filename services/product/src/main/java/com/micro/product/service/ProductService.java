@@ -1,13 +1,13 @@
 package com.micro.product.service;
 
 import com.micro.product.mapper.ProductMapper;
-import com.micro.product.model.ApiResponse;
-import com.micro.product.model.ProductRequest;
-import com.micro.product.model.ProductResponse;
+import com.micro.product.model.*;
 import com.micro.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class ProductService {
@@ -23,5 +23,10 @@ public class ProductService {
                 HttpStatus.OK.value());
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(List<ProductPurchaseRequest> request) {
+
+        return null;
     }
 }

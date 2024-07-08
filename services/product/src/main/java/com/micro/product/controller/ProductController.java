@@ -28,6 +28,6 @@ public class ProductController {
     public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(
             @RequestBody  @Valid  List<ProductPurchaseRequest> request
     ) {
-        return null;
+        return productService.purchaseProducts(request);
     }
 }

@@ -9,18 +9,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper {
 
-    public Product toProduct(ProductRequest productRequest){
-        return  Product.builder()
+    public Product toProduct(ProductRequest productRequest) {
+        return Product
+                .builder()
                 .id(productRequest.id())
                 .availableQuantity(productRequest.availableQuantity())
-                .category(Category.builder().id(productRequest.categoryId()).build())
+                .category(Category
+                        .builder().
+                        id(productRequest.
+                                categoryId()).
+                        build())
                 .name(productRequest.name())
                 .description(productRequest.description())
                 .price(productRequest.price())
                 .build();
     }
 
-    public ProductResponse fromProduct (Product product){
+    public ProductResponse fromProduct(Product product) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
