@@ -1,5 +1,7 @@
 # E-commerce-App
 
+![e-commerce](https://github.com/fatemehSalem/E-commerce-App/assets/42536170/3699cf3e-3d20-44a3-86c8-c6ce399ea94d)
+
 
 **Customer:** This represents the initiating party who places an order through the e-commerce platform.
 
@@ -26,9 +28,9 @@ The diagram outlines the following data flow:
     **API Gateway Routes Request:** The API Gateway routes the request to the appropriate microservice, likely the "Order" service in this case.
 
     **Order Service:** The Order service processes the order details, which might involve:
-        Communicating with the Product service to retrieve product information.
-        Interacting with the Payment service to verify and process the payment.
+
+-         Communicating with the Product service to retrieve product information.
+
+-         Interacting with the Payment service to verify and process the payment.
 
     **Order Confirmation:** Once the order is processed, the Order service sends confirmation messages to the customer.
-
-![e-commerce](https://github.com/fatemehSalem/E-commerce-App/assets/42536170/3699cf3e-3d20-44a3-86c8-c6ce399ea94d)
