@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
+@Service
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -34,7 +36,7 @@ public class ProductService {
     public ResponseEntity<ApiResponse<List<ProductPurchaseResponse>>> purchaseProducts(List<ProductPurchaseRequest> request) {
         var productIds = request.stream()
                 .map(ProductPurchaseRequest::productId).toList();
-        var storedProducts = productRepository.findAllByIdOrderByIdAsc(productIds);
+        var storedProducts = productRepository.findAllByIdInOrderById(productIds);
         if(productIds.size() != storedProducts.size())
             throw new ProductPurchaseException("One or more products does not exits!");
 

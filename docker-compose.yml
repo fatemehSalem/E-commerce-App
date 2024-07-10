@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - local_pgdata:/var/lib/postgresql/data
-#    networks:
-#      - microservices-net
+    networks:
+      - e-commerce_microservices-net
     restart: unless-stopped
 
   pgadmin:
@@ -23,14 +23,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     volumes:
       - pgadmin-data:/var/lib/pgadmin/data
-#    networks:
-#      - microservices-net
+    networks:
+      - e-commerce_microservices-net
     restart: unless-stopped
 
 
   mongodb:
-    image: mongo
-    container_name: mongo_db
+    image: mongo:latest
+    container_name: mongodb
     ports:
       - 27017:27017
     volumes:
@@ -38,6 +38,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=ftmh
       - MONGO_INITDB_ROOT_PASSWORD=ftmh
+    networks:
+      - e-commerce_microservices-net
 
   mongo-express:
     image: mongo-express
@@ -46,7 +48,7 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongo_db
+      ME_CONFIG_MONGODB_SERVER: mongodb
       ME_CONFIG_BASICAUTH_USERNAME: ftmh
       ME_CONFIG_BASICAUTH_PASSWORD: ftmh
       ME_CONFIG_MONGODB_PORT: 27017
@@ -54,6 +56,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ftmh
     depends_on:
       - mongodb
+    networks:
+      - e-commerce_microservices-net
 
   mail-dev:
     container_name: ms-mail-dev
@@ -61,9 +65,9 @@ services:
     ports:
       - 1080:1080 #for UI
       - 1025:1025 #SMTP
-#networks:
-#  microservices-net:
-#    driver: bridge
+networks:
+  e-commerce_microservices-net:
+    driver: bridge
 volumes:
   local_pgdata:
   pgadmin-data:

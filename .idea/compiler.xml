@@ -11,12 +11,14 @@
         <module name="product" />
         <module name="discovery-server" />
         <module name="customer" />
+        <module name="order" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="21" />
       <module name="customer" target="21" />
       <module name="discovery-server" target="21" />
+      <module name="order" target="1.5" />
       <module name="product" target="21" />
     </bytecodeTargetLevel>
   </component>
