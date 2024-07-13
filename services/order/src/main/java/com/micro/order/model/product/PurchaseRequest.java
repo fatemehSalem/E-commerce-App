@@ -1,4 +1,4 @@
-package com.micro.order.model;
+package com.micro.order.model.product;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
