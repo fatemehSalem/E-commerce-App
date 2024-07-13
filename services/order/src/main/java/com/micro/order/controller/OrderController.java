@@ -20,7 +20,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createOrder(
             @RequestBody @Valid OrderRequest orderRequest){
-        return null;
+        return orderService.createOrder(orderRequest);
     }
 
 
