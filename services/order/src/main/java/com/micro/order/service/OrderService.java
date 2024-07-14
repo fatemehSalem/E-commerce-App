@@ -34,7 +34,7 @@ public class OrderService {
 
         orderRepository.save(orderMapper.toOrder(orderRequest));
 
-        for(PurchaseRequest purchaseRequest : orderRequest.products()){
+/*        for(PurchaseRequest purchaseRequest : orderRequest.products()){
             orderLineService.saveOrderLine(
                     new OrderLineRequest(
                             null,
@@ -44,8 +44,17 @@ public class OrderService {
 
                     )
             );
-        }
+        }*/
+        //Stream API
 
+        orderRequest.products().stream()
+                .map(purchaseRequest -> new OrderLineRequest(
+                        null,
+                        orderRequest.id(),
+                        purchaseRequest.productId(),
+                        purchaseRequest.quantity()
+
+                )).forEach(orderLineService:: saveOrderLine);
 
         ApiResponse<Long> apiResponse = new ApiResponse<>(
                 customerId,
