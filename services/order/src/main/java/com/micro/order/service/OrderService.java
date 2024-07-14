@@ -23,9 +23,10 @@ public class OrderService {
                 .findById(customerId).orElseThrow(() -> new BusinessException(
                         String.format("Cannot create order :: no Customer found with this provided id :: %s", customerId)));
 
+        productClient.purchaseProducts(orderRequest.products());
         ApiResponse<Long> apiResponse = new ApiResponse<>(
                 customerId,
-                "find customer by ID was successful",
+                "create order was successful",
                 HttpStatus.OK.value());
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
