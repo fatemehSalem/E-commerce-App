@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 
 public record PurchaseRequest(
         @NotNull(message = "product is mandatory!")
-        Integer productId,
+        Long productId,
 
         @Positive(message = "quantity is mandatory")
         double quantity

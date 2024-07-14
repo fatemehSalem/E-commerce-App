@@ -3,9 +3,11 @@ package com.micro.order.service;
 import com.micro.order.exception.BusinessException;
 import com.micro.order.mapper.OrderMapper;
 import com.micro.order.model.ApiResponse;
+import com.micro.order.model.OrderLineRequest;
 import com.micro.order.model.OrderRequest;
 import com.micro.order.model.customer.CustomerClient;
 import com.micro.order.model.product.ProductClient;
+import com.micro.order.model.product.PurchaseRequest;
 import com.micro.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ public class OrderService {
     private final CustomerClient customerClient;
     private final ProductClient productClient;
     private final OrderMapper orderMapper;
+    private final OrderLineService orderLineService;
 
     public ResponseEntity<ApiResponse<Long>> createOrder(OrderRequest orderRequest){
         var customerId = orderRequest.customerId();
@@ -30,6 +33,20 @@ public class OrderService {
         productClient.purchaseProducts(orderRequest.products());
 
         orderRepository.save(orderMapper.toOrder(orderRequest));
+
+        for(PurchaseRequest purchaseRequest : orderRequest.products()){
+            orderLineService.saveOrderLine(
+                    new OrderLineRequest(
+                            null,
+                            orderRequest.id(),
+                            purchaseRequest.productId(),
+                            purchaseRequest.quantity()
+
+                    )
+            );
+        }
+
+
         ApiResponse<Long> apiResponse = new ApiResponse<>(
                 customerId,
                 "create order was successful",
