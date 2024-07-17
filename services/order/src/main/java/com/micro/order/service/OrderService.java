@@ -7,7 +7,6 @@ import com.micro.order.model.OrderLineRequest;
 import com.micro.order.model.OrderRequest;
 import com.micro.order.model.customer.CustomerClient;
 import com.micro.order.model.product.ProductClient;
-import com.micro.order.model.product.PurchaseRequest;
 import com.micro.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
