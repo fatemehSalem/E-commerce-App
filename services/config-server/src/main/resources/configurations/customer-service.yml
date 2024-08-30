@@ -7,6 +7,7 @@ spring:
       database: customer
       authentication-database: admin
 
+
 #resilience4j:
 #  circuitbreaker:
 #    instances:
