@@ -16,7 +16,7 @@ These three configurations are related to Kafka's fault tolerance and data durab
 
 The following line creates a Kafka message that contains the OrderConfirmation payload and sets the topic header for the message to "order-topic":
 
- Message<OrderConfirmation> message = MessageBuilder
+>   Message<OrderConfirmation> message = MessageBuilder
 >     .withPayload(orderConfirmation)
 >     .setHeader(KafkaHeaders.TOPIC, "order-topic")
 >     .build();
