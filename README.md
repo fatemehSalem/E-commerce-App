@@ -11,16 +11,15 @@ These three configurations are related to Kafka's fault tolerance and data durab
 
 **KAFKA_TRANSACTION_STATE_LOG_MIN_ISR**: Ensures a minimum number of in-sync replicas for the transaction state log, providing a safety guarantee that transactions are committed only when sufficiently replicated.
 
-
-
-**Message Creation and Sending**
+------------------------------------------------------------------------------------------------------------
+### **Message Creation and Sending**
 
 The following line creates a Kafka message that contains the OrderConfirmation payload and sets the topic header for the message to "order-topic":
 
-> Message<OrderConfirmation> message = MessageBuilder
+_**_> Message<OrderConfirmation> message = MessageBuilder
 >     .withPayload(orderConfirmation)
 >     .setHeader(KafkaHeaders.TOPIC, "order-topic")
->     .build();
+>     .build();_**_
 
 **MessageBuilder**: This is a utility class from Spring Messaging that allows you to build a message with a payload and headers.
 **withPayload(orderConfirmation):** Sets the payload of the message as the OrderConfirmation object.
