@@ -22,7 +22,9 @@ The following line creates a Kafka message that contains the OrderConfirmation p
 >     .build();
 
 **MessageBuilder**: This is a utility class from Spring Messaging that allows you to build a message with a payload and headers.
+
 **withPayload(orderConfirmation):** Sets the payload of the message as the OrderConfirmation object.
+
 **setHeader(KafkaHeaders.TOPIC, "order-topic"):** Adds a Kafka-specific header to the message, specifying the topic where the message will be sent. In this case, it is "order-topic".
 
 This message is then sent using the KafkaTemplate: kafkaTemplate.send(message);
