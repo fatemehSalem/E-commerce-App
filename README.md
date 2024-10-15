@@ -16,10 +16,10 @@ These three configurations are related to Kafka's fault tolerance and data durab
 
 The following line creates a Kafka message that contains the OrderConfirmation payload and sets the topic header for the message to "order-topic":
 
-_**_> Message<OrderConfirmation> message = MessageBuilder
+ Message<OrderConfirmation> message = MessageBuilder
 >     .withPayload(orderConfirmation)
 >     .setHeader(KafkaHeaders.TOPIC, "order-topic")
->     .build();_**_
+>     .build();
 
 **MessageBuilder**: This is a utility class from Spring Messaging that allows you to build a message with a payload and headers.
 **withPayload(orderConfirmation):** Sets the payload of the message as the OrderConfirmation object.
