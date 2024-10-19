@@ -1,16 +1,16 @@
 package com.micro.order.service;
 
 import com.micro.order.exception.BusinessException;
+import com.micro.order.kafka.OrderConfirmation;
+import com.micro.order.kafka.OrderProducer;
 import com.micro.order.mapper.OrderMapper;
-import com.micro.order.model.ApiResponse;
 import com.micro.order.model.OrderLineRequest;
 import com.micro.order.model.OrderRequest;
 import com.micro.order.model.customer.CustomerClient;
 import com.micro.order.model.product.ProductClient;
+import com.micro.order.model.product.PurchaseRequest;
 import com.micro.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,18 +22,19 @@ public class OrderService {
     private final ProductClient productClient;
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
+    private final OrderProducer orderProducer;
 
-    public ResponseEntity<ApiResponse<Long>> createOrder(OrderRequest orderRequest){
+    public Long createOrder(OrderRequest orderRequest){
         var customerId = orderRequest.customerId();
-        customerClient
-                .findById(customerId).orElseThrow(() -> new BusinessException(
+       var customer = customerClient
+                .findCustomerById(customerId).orElseThrow(() -> new BusinessException(
                         String.format("Cannot create order :: no Customer found with this provided id :: %s", customerId)));
 
-        productClient.purchaseProducts(orderRequest.products());
+        var purchasedProducts = productClient.purchaseProducts(orderRequest.products());
 
-        orderRepository.save(orderMapper.toOrder(orderRequest));
+        var order = orderRepository.save(orderMapper.toOrder(orderRequest));
 
-/*        for(PurchaseRequest purchaseRequest : orderRequest.products()){
+       for(PurchaseRequest purchaseRequest : orderRequest.products()){
             orderLineService.saveOrderLine(
                     new OrderLineRequest(
                             null,
@@ -43,23 +44,17 @@ public class OrderService {
 
                     )
             );
-        }*/
-        //Stream API
-
-        orderRequest.products().stream()
-                .map(purchaseRequest -> new OrderLineRequest(
-                        null,
-                        orderRequest.id(),
-                        purchaseRequest.productId(),
-                        purchaseRequest.quantity()
-
-                )).forEach(orderLineService:: saveOrderLine);
-
-        ApiResponse<Long> apiResponse = new ApiResponse<>(
-                customerId,
-                "create order was successful",
-                HttpStatus.OK.value());
-
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        //todo start payment process
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        orderRequest.reference(),
+                        orderRequest.amount(),
+                        orderRequest.paymentMethod(),
+                        customer,
+                        purchasedProducts
+                )
+        );
+       return order.getId();
     }
 }

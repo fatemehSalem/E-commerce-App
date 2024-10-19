@@ -12,10 +12,11 @@ import java.util.Optional;
         name = "customer-service",
         url = "${application.config.customer-url}"
 )
-@CircuitBreaker(name = "myServiceCircuitBreaker", fallbackMethod = "fallbackMethod")
+@CircuitBreaker(name = "myServiceCircuitBreaker",
+        fallbackMethod = "fallbackMethod")
 public interface CustomerClient {
     @GetMapping("/findById/{customerId}")
-    Optional<Long> findById(@PathVariable("customerId") Long customerId);
+    Optional<CustomerResponse> findCustomerById(@PathVariable("customerId") Long customerId);
 
     default String fallbackMethod(Long id, Throwable throwable) {
         return "Fallback response test";

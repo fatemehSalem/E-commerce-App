@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createOrder(
+    public Long createOrder(
             @RequestBody @Valid OrderRequest orderRequest){
         return orderService.createOrder(orderRequest);
     }
